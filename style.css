@@ -1,0 +1,35 @@
+button {
+  box-sizing: border-box;
+  width: 60px;
+  padding: 20px;
+  font-size: 20px;
+}
+
+#calc_container {
+  display: inline-flex;
+  flex-direction: column;
+  background-color: rgb(47, 24, 101);
+  border-radius: 15px;
+  padding: 8px;
+  gap: 5px;
+}
+
+#panel {
+  display: flex;
+  box-sizing: border-box;
+  height: 50px;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-evenly;
+  background-color: rgb(185, 130, 63);
+  border-radius: 5px;
+}
+
+#panel div {
+  padding: 5px;
+}
+
+button:hover {
+  background-color: aquamarine;
+  transform: scale(1.1);
+}
