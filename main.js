@@ -7,8 +7,19 @@ let result = 0;
 let table = document.getElementById("table");
 let table_buttons = [...document.querySelectorAll("td > button")];
 let current = document.getElementById("current");
+let last = document.getElementById("last");
 let equalsBtn = document.getElementById("equals");
 let acBtn = document.getElementById("ac");
+let cBtn = document.getElementById("c");
+
+cBtn.addEventListener("click", (e) => {
+  if (current.textContent.length - 1 === 0) {
+    current.innerText = "0";
+  } else {
+    current.innerText = current.innerText.slice(0, -1);
+  }
+  result = Number(current.innerText);
+});
 
 acBtn.addEventListener("click", (e) => {
   op1 = "";
@@ -22,12 +33,18 @@ equalsBtn.addEventListener("click", (e) => {
   if (op1 !== "" && op2 !== "" && operator !== null) {
     result += operate(operator, op1, op2);
     current.innerText = result;
+    if (operator === "!") {
+      last.innerText = `${op1} ${operator} =`;
+    } else {
+      last.innerText = `${op1} ${operator} ${op2} =`;
+    }
     op1 = "";
     op2 = "";
     operatorChosen = false;
   } else {
     current.innerText = result;
   }
+  result = 0;
 });
 
 table_buttons.forEach((item) => {
@@ -51,7 +68,7 @@ function operate(operator, operand1, operand2) {
     case "÷":
       if (operand2 === 0) return null;
       else return divide(operand1, operand2);
-    case "x^y":
+    case "^":
       return power(operand1, operand2);
     case "!":
       return factorial(operand1, operand2);
@@ -75,6 +92,7 @@ function operatorClick(e) {
     operator = e.target.innerText;
     operatorChosen = true;
     console.log("Operator: ", operator);
+    last.innerText = `${op1} ${operator}`;
     if (operator === "!") {
       op2 = "0";
     }
