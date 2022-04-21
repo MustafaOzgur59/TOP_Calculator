@@ -12,40 +12,47 @@ let equalsBtn = document.getElementById("equals");
 let acBtn = document.getElementById("ac");
 let cBtn = document.getElementById("c");
 
-cBtn.addEventListener("click", (e) => {
-  if (current.textContent.length - 1 === 0) {
-    current.innerText = "0";
-  } else {
-    current.innerText = current.innerText.slice(0, -1);
-  }
-  result = Number(current.innerText);
-});
+cBtn.addEventListener("click", deleteOne);
+equalsBtn.addEventListener("click", equalsClick);
+acBtn.addEventListener("click", reset);
 
-acBtn.addEventListener("click", (e) => {
+function reset(e) {
   op1 = "";
   op2 = "";
   operatorChosen = false;
   current.innerText = "0";
   result = 0;
-});
+}
 
-equalsBtn.addEventListener("click", (e) => {
+function equalsClick(e) {
   if (op1 !== "" && op2 !== "" && operator !== null) {
-    result += operate(operator, op1, op2);
+    result = operate(operator, op1, op2);
     current.innerText = result;
     if (operator === "!") {
       last.innerText = `${op1} ${operator} =`;
     } else {
       last.innerText = `${op1} ${operator} ${op2} =`;
     }
-    op1 = "";
+    op1 = String(result);
     op2 = "";
-    operatorChosen = false;
   } else {
     current.innerText = result;
   }
-  result = 0;
-});
+}
+function deleteOne(e) {
+  if (!operatorChosen) {
+    //do nothing
+  } else {
+    console.log("Current length: ", current.innerText.length);
+    if (current.innerText.length == 1) {
+      reset(e);
+    } else {
+      current.innerText = current.innerText.slice(0, -1);
+      result = Number(current.innerText);
+      op1 = current.innerText;
+    }
+  }
+}
 
 table_buttons.forEach((item) => {
   if ([...item.classList].includes("operator")) {
@@ -81,6 +88,9 @@ function operandClick(e) {
   if (!operatorChosen) {
     op1 += e.target.innerText;
     console.log("Op1: ", op1);
+  } // continue working after first operation assigning result to op1
+  else if (operatorChosen && op1 === String(result)) {
+    op2 += e.target.innerText;
   } else {
     op2 += e.target.innerText;
     console.log("Op2: ", op2);
@@ -96,6 +106,11 @@ function operatorClick(e) {
     if (operator === "!") {
       op2 = "0";
     }
+    // continue working after first
+  } else if (operatorChosen && op1 === String(result)) {
+    operator = e.target.innerText;
+    operatorChosen = true;
+    console.log("Operator: ", operator);
   } else {
     console.log("Please choose op1 first");
   }
